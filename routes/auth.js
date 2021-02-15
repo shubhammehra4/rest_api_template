@@ -26,4 +26,8 @@ router.post("/login", validateLogin, login);
 
 router.post("/google/auth/callback", googleAuth);
 
+// router.post("/forgot-password");
+
+// router.put("/reset-password/:resetToken");
+
 module.exports = router;

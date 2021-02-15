@@ -7,7 +7,7 @@ exports.register = async (req, res, next) => {
     try {
         let user = await db.User.create({ ...req.body });
         let { id, username, email, name } = user;
-        console.log(user);
+        console.log(user); //! Remove
         let token = jwt.sign(
             {
                 id,
@@ -93,3 +93,29 @@ exports.googleAuth = async (req, res, next) => {
         });
     }
 };
+
+// exports.forgotPassword = async (req, res, next) => {
+//     try {
+//         const { email } = req.body;
+//         const user = await db.User.findOne({ email });
+//         if (!user) {
+//             return next({
+//                 status: 404,
+//                 message: "Email is not registered!",
+//             });
+//         }
+//         const { id } = user;
+//         const resetToken = jwt.sign({ id }, process.env.JWT_RESET_TOKEN_SECRET);
+//         //! node-mailer to email token
+//         res.json(resetToken);
+//     } catch (err) {
+//         next(err);
+//     }
+// };
+
+// exports.resetForgottenPassword = async (req, res, next) => {
+//     try {
+//         const { resetToken } = req.params;
+//         // ! Client Side Login to send new password
+//     } catch (err) {}
+// };
