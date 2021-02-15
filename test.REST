@@ -1,0 +1,24 @@
+POST http://localhost:8081/api/auth/register
+Content-Type: application/json
+
+{
+    "email":"tester4@gmail.com",
+    "username": "test",
+    "name": "hello",
+    "password": "password@1",
+    "location": "Ladakh,India"
+}
+
+
+
+###
+
+
+
+POST http://localhost:8081/api/auth/login
+Content-Type: application/json
+
+{
+    "email":"tester3@gmail.com",
+    "password": "password@1"
+}
