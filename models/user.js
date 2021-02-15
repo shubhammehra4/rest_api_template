@@ -34,6 +34,7 @@ const userSchema = new Schema(
             type: String,
             required: [true, "Username is required"],
             unique: true,
+            trim: true,
         },
         password: {
             type: String,
@@ -41,6 +42,7 @@ const userSchema = new Schema(
         },
         name: {
             type: String,
+            trim: true,
             minLength: [3, "Please enter a Valid name"],
             maxlength: [30, "Name is too long"],
         },
@@ -48,6 +50,7 @@ const userSchema = new Schema(
         bio: {
             type: String,
             maxlength: [150, "Bio shouldn't exceed 150 characters"],
+            trim: true,
         },
         gender: {
             type: String,

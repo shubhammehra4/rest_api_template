@@ -5,7 +5,7 @@ const express = require("express"),
 
 const { validateRegister, validateLogin } = require("../utils/validation");
 
-const { register, login } = require("../handlers/auth.js");
+const { register, login, googleAuth } = require("../handlers/auth.js");
 
 // const limiter = rateLimiter({
 //     store: new MongoStore({
@@ -23,5 +23,7 @@ const { register, login } = require("../handlers/auth.js");
 router.post("/register", validateRegister, register);
 
 router.post("/login", validateLogin, login);
+
+router.post("/google/auth/callback", googleAuth);
 
 module.exports = router;

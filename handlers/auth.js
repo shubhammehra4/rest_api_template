@@ -1,5 +1,7 @@
 const db = require("../models"),
     jwt = require("jsonwebtoken");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 exports.register = async (req, res, next) => {
     try {
@@ -11,7 +13,6 @@ exports.register = async (req, res, next) => {
                 id,
                 username,
                 email,
-                name,
             },
             process.env.JWT_TOKEN_SECRET
         );
@@ -30,7 +31,7 @@ exports.register = async (req, res, next) => {
         }
         return next({
             status: 400,
-            message: err.message,
+            message: err.message || err,
         });
     }
 };
@@ -51,11 +52,10 @@ exports.login = async (req, res, next) => {
                     id,
                     username,
                     email,
-                    name,
                 },
                 process.env.JWT_TOKEN_SECRET
             );
-            return res.status(201).json({
+            return res.status(200).json({
                 id,
                 username,
                 name,
@@ -72,6 +72,24 @@ exports.login = async (req, res, next) => {
         return next({
             status: 400,
             message: "Invalid Credentials",
+        });
+    }
+};
+
+exports.googleAuth = async (req, res, next) => {
+    try {
+        const { token } = req.body;
+
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        console.log(ticket, ticket.getPayload());
+    } catch (err) {
+        return next({
+            status: 400,
+            message: err.message || err,
         });
     }
 };

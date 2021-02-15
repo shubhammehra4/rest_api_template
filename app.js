@@ -31,7 +31,7 @@ const {
 
 app.use("/api/auth", authRoutes);
 
-app.user("/api/user", ensureCorrectUser, userRoutes);
+app.use("/api/user/:id", ensureCorrectUser, userRoutes);
 
 //! Erros
 app.use(function (req, res, next) {
