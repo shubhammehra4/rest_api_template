@@ -59,6 +59,7 @@ const userSchema = new Schema(
         dob: Date,
         location: String,
         geometry: geoSchema,
+        google: String,
     },
     {
         timestamps: true,
@@ -78,6 +79,17 @@ userSchema.pre("save", async function (next) {
         return next(err);
     }
 });
+
+userSchema.static(
+    "findOneOrCreate",
+    async function findOneOrCreate(service, id, doc) {
+        try {
+            const found = await this.findOne({ [service]: id });
+
+            return found || this.create(doc);
+        } catch (err) {}
+    }
+);
 
 userSchema.methods.comparePassword = async function (candidatePassword, next) {
     try {

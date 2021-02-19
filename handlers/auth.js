@@ -86,6 +86,7 @@ exports.googleAuth = async (req, res, next) => {
         });
 
         console.log(ticket, ticket.getPayload());
+        // const user = await db.User.findOneOrCreate("google", "googleid", "doc");
     } catch (err) {
         return next({
             status: 400,
