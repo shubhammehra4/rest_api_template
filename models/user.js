@@ -46,7 +46,7 @@ const userSchema = new Schema(
             minLength: [3, "Please enter a Valid name"],
             maxlength: [30, "Name is too long"],
         },
-        image: profilePictureSchema,
+        picture: profilePictureSchema,
         bio: {
             type: String,
             maxlength: [150, "Bio shouldn't exceed 150 characters"],
@@ -82,12 +82,15 @@ userSchema.pre("save", async function (next) {
 
 userSchema.static(
     "findOneOrCreate",
-    async function findOneOrCreate(service, id, doc) {
+    async function findOneOrCreate(query, value, doc) {
         try {
-            const found = await this.findOne({ [service]: id });
+            const found = await this.findOne({ [query]: value });
 
             return found || this.create(doc);
-        } catch (err) {}
+        } catch (err) {
+            console.log(`DB Error: ${err}`);
+            return err;
+        }
     }
 );
 

@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 if (process.env.NODE_ENV !== "production") {
     mongoose.set("debug", true);
 }
-mongoose.Promise = Promise;
+mongoose.Promise = global.Promise;
 
 mongoose.connect(process.env.DB_URL, {
     keepAlive: true,

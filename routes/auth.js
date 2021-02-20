@@ -24,7 +24,7 @@ router.post("/register", validateRegister, register);
 
 router.post("/login", validateLogin, login);
 
-router.post("/google/auth/callback", googleAuth);
+router.post("/google", googleAuth);
 
 // router.post("/forgot-password");
 

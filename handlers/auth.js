@@ -95,28 +95,50 @@ exports.googleAuth = async (req, res, next) => {
     }
 };
 
-// exports.forgotPassword = async (req, res, next) => {
-//     try {
-//         const { email } = req.body;
-//         const user = await db.User.findOne({ email });
-//         if (!user) {
-//             return next({
-//                 status: 404,
-//                 message: "Email is not registered!",
-//             });
-//         }
-//         const { id } = user;
-//         const resetToken = jwt.sign({ id }, process.env.JWT_RESET_TOKEN_SECRET);
-//         //! node-mailer to email token
-//         res.json(resetToken);
-//     } catch (err) {
-//         next(err);
-//     }
-// };
+exports.forgotPassword = async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        const user = await db.User.findOne({ email });
+        if (!user) {
+            return next({
+                status: 404,
+                message: "Email is not registered!",
+            });
+        }
+        const { id, email } = user;
+        const resetToken = jwt.sign(
+            { id, email },
+            process.env.JWT_RESET_TOKEN_SECRET
+        );
+        //! node-mailer to email token
+        res.json(resetToken);
+    } catch (err) {
+        next(err);
+    }
+};
 
-// exports.resetForgottenPassword = async (req, res, next) => {
-//     try {
-//         const { resetToken } = req.params;
-//         // ! Client Side Login to send new password
-//     } catch (err) {}
-// };
+exports.resetForgottenPassword = async (req, res, next) => {
+    try {
+        // ! Client Side Logic to send new password
+        const { resetToken, newPassword } = req.query;
+        jwt.verify(
+            resetToken,
+            process.env.JWT_RESET_TOKEN_SECRET,
+            async (err, decoded) => {
+                if (decoded && decoded.id) {
+                    const user = await db.User.findById(decoded.id);
+                    user.password = newPassword;
+                    await user.save();
+                    return res.send(200).json({
+                        message: "Updated!",
+                    });
+                }
+            }
+        );
+    } catch (err) {
+        return next({
+            status: 404,
+            message: err,
+        });
+    }
+};
