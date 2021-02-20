@@ -1,8 +1,20 @@
 const db = require("../models");
+import { cloudinary } from "../middlewares/cloudinary";
 
 exports.pictureUpload = async (req, res, next) => {
     try {
+        // const { id } = req.params;
+        // const { path, filename } = req.files;
         console.log(req.files);
+        // const user = await db.User.findById(id);
+        // if (user.picture) {
+        //! Delete the previous image and update db with the new one
+        // let { filename } = user.picture;
+        // await cloudinary.uploader.destroy(filename);
+        // }
+        // user.picture = { url: path, filename };
+        // await user.save();
+
         return res.status(200).json({ message: "done" });
     } catch (err) {
         next({

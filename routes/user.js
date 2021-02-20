@@ -11,6 +11,6 @@ const { pictureUpload, resetPassword } = require("../handlers/user");
 
 router.put("/reset-password", resetPassword);
 
-router.post("/profile/upload", upload.single("image"), pictureUpload);
+router.post("/profile/upload", upload.single("picture"), pictureUpload);
 
 module.exports = router;
