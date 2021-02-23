@@ -1,5 +1,5 @@
 const db = require("../models");
-import { cloudinary } from "../middlewares/cloudinary";
+const { cloudinary } = require("../middlewares/cloudinary");
 
 exports.pictureUpload = async (req, res, next) => {
     try {

@@ -105,7 +105,7 @@ exports.forgotPassword = async (req, res, next) => {
                 message: "Email is not registered!",
             });
         }
-        const { id, email } = user;
+        const { id } = user;
         const resetToken = jwt.sign(
             { id, email },
             process.env.JWT_RESET_TOKEN_SECRET
