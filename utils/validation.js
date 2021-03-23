@@ -42,7 +42,7 @@ exports.validateRegister = (req, res, next) => {
     const { error } = userSchemaRegister.validate(req.body);
     if (error) {
         const message = error.details.map((e) => e.message).join(", ");
-        console.log(message);
+        console.log(message); //! Remove
         next({
             status: 400,
             message,
@@ -61,7 +61,10 @@ exports.validateLogin = (req, res, next) => {
     const { error } = userSchemaLogin.validate(req.body);
     if (error) {
         const message = error.details.map((e) => e.message.join(", "));
-        next(message);
+        next({
+            status: 400,
+            message,
+        });
     } else {
         next();
     }

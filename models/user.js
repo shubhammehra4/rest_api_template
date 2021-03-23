@@ -20,7 +20,14 @@ const geoSchema = new Schema({
     coordinates: {
         type: [Number],
         required: true,
+        // index: "2dsphere",
     },
+    formattedAddress: String,
+    street: String,
+    city: String,
+    state: String,
+    zipcode: String,
+    country: String,
 });
 
 const userSchema = new Schema(
@@ -29,6 +36,8 @@ const userSchema = new Schema(
             type: String,
             required: [true, "Email is required"],
             unique: true,
+            lowercase: true,
+            // validate: [(val) => {}, "Email is not valid"],
             trim: true,
         },
         username: {
@@ -44,7 +53,7 @@ const userSchema = new Schema(
         name: {
             type: String,
             trim: true,
-            minLength: [3, "Please enter a Valid name"],
+            minlength: [3, "Please enter a Valid name"],
             maxlength: [30, "Name is too long"],
         },
         picture: profilePictureSchema,
@@ -58,7 +67,7 @@ const userSchema = new Schema(
             enum: ["male", "female", "unspecified"],
         },
         dob: Date,
-        location: String,
+        address: String,
         geometry: geoSchema,
         google: String,
     },

@@ -1,6 +1,15 @@
 const db = require("../models");
 const { cloudinary } = require("../middlewares/cloudinary");
 
+exports.profileEdit = async (req, res, next) => {
+    try {
+        const { id } = req.params;
+        const user = await db.User.findByIdAndUpdate(id, { ...req.body });
+    } catch (err) {
+        next(err);
+    }
+};
+
 exports.pictureUpload = async (req, res, next) => {
     try {
         // const { id } = req.params;

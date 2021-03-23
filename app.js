@@ -7,10 +7,21 @@ const express = require("express"),
     mongoSanitize = require("express-mongo-sanitize"),
     errorHandler = require("./utils/Error");
 
+const whitelist = process.env.WHITELIST_URL.split(",");
+const corsOptionsDelegate = function (req, callback) {
+    var corsOptions;
+    if (whitelist.indexOf(req.header("Origin")) !== -1) {
+        corsOptions = { origin: true };
+    } else {
+        corsOptions = { origin: false };
+    }
+    callback(null, corsOptions);
+};
+
 const app = express();
 //! Security
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsOptionsDelegate));
 app.use(mongoSanitize({ replaceWith: "_" }));
 //! Config
 app.use(express.json());
@@ -33,7 +44,7 @@ app.use("/api/auth", authRoutes);
 
 app.use("/api/user/:id", ensureCorrectUser, userRoutes);
 
-//! Erros
+//! Errors
 app.use(function (req, res, next) {
     let err = new Error("Not Found!");
     err.status = 404;
