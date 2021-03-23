@@ -27,16 +27,16 @@ const Joi = BaseJoi.extend(extension);
 
 exports.validateRegister = (req, res, next) => {
     const userSchemaRegister = Joi.object({
-        email: Joi.string().email().min(6).required(),
+        email: Joi.string().email().required(),
         username: Joi.string()
+            .escapeHTML()
             .alphanum()
             .min(3)
             .max(30)
-            .escapeHTML()
             .required(),
-        name: Joi.string().min(3).max(30).escapeHTML().required(),
+        name: Joi.string().escapeHTML().min(3).max(30).required(),
         password: Joi.string().min(8).max(50).required(),
-        bio: Joi.string().alphanum().max(150).escapeHTML(),
+        bio: Joi.string().escapeHTML().alphanum().max(150),
         location: Joi.string().escapeHTML(),
     });
     const { error } = userSchemaRegister.validate(req.body);
@@ -54,13 +54,14 @@ exports.validateRegister = (req, res, next) => {
 
 exports.validateLogin = (req, res, next) => {
     const userSchemaLogin = Joi.object({
-        email: Joi.string().email().min(6),
+        email: Joi.string().email(),
         username: Joi.string().alphanum().min(3).max(30),
         password: Joi.string().min(8).required(),
     });
     const { error } = userSchemaLogin.validate(req.body);
     if (error) {
         const message = error.details.map((e) => e.message.join(", "));
+        console.log(message); //! Remove
         next({
             status: 400,
             message,
